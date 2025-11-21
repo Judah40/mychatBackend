@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+
+    "baseUrl": "./src"
+    // "paths": {
+    //   "@/*": ["*"]
+    // }
+  },
+  "include": [
+    "src/**/*" // This includes all files and subdirectories in the 'src' folder
+  ],
+  "files": [
+    "src/index.ts",
+    "src/types/express/index.d.ts" // Explicitly list the declaration file
+  ]
+}
