@@ -1,11 +1,41 @@
-import { startServer } from "./Config/databaseConfig";
-import express from "express";
+import { profileRoute } from "./module/Profile/Profile.route";
+import { rateLimiterMiddlware } from "./middleware/redisRateLimit.middleware";
+import { UserRoute } from "./module/Users/Users.route";
+import express, { NextFunction, Request, Response } from "express";
+import { requireAuthenticatedUser } from "./middleware/auth";
 
-const app = express();
-const PORT = process.env.PORT || 5000;
+export const app = express();
 
+app.use(express.json({ limit: "10mb" })); // add a limit to avoid DOS attacks
+app.use(rateLimiterMiddlware);
+app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.send("Hello, World!");
 });
 
-startServer(app);
+app.use("/api/v1/User", UserRoute);
+app.use("/api/v1/profile", requireAuthenticatedUser, profileRoute);
+// Global error handler
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
+});
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.status(404).json({ success: false, message: "Route not found" });
+});
+// app.use((req: Request, res: Response, next: NextFunction) => {
+//   const routes = [
+//     { path: "/api/v1/User/authenticate", methods: ["POST"] },
+//     { path: "/api/v1/User/generate-token", methods: ["POST"] },
+//   ];
+
+//   const route = routes.find((r) => r.path === req.path);
+//   if (route && !route.methods.includes(req.method)) {
+//     res.set("Allow", route.methods.join(", "));
+//     return res
+//       .status(405)
+//       .json({ success: false, message: "Method Not Allowed" });
+//   }
+//   next();
+// });
