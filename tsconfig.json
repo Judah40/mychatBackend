@@ -15,10 +15,9 @@
     // }
   },
   "include": [
-    "src/**/*", // This includes all files and subdirectories in the 'src' folder
-    "jest.teardown.js",
-    "__mocks__"
+    "src/**/*" // This includes all files and subdirectories in the 'src' folder
   ],
+  "exclude": ["node_modules", "__mocks__"],
   "files": [
     "src/index.ts",
     "src/types/express/index.d.ts" // Explicitly list the declaration file

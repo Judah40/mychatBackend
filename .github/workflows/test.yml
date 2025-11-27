@@ -1,0 +1,46 @@
+name: Run Tests on Test Branch
+
+on:
+  push:
+    branches:
+      - test
+  pull_request:
+    branches:
+      - test
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Tests
+        run: npm test
+      - name: Load env
+        env:
+          DATABASE_URL: ${{secrets.DATABASE_URL}}
+          PORT: ${{secrets.PORT}}
+          CLOUDFLARE_API_TOKEN: ${{secrets.CLOUDFLARE_API_TOKEN}}
+          CLOUDFLARE_KEY_ID: ${{secrets.CLOUDFLARE_KEY_ID}}
+          CLOUDFLARE_SECRET_ACCESS_KEY: ${{secrets.CLOUDFLARE_SECRET_ACCESS_KEY}}
+          CLOUDFLARE_DEFAULT_ENDPOINT: ${{secrets.CLOUDFLARE_DEFAULT_ENDPOINT}}
+          CLOUDFLARE_EU_ENDPOINT: ${{secrets.CLOUDFLARE_EU_ENDPOINT}}
+          CLOUDFLARE_BUCKET_NAME: ${{secrets.CLOUDFLARE_BUCKET_NAME}}
+          JWT_TOKEN_SECRET: ${{secrets.JWT_TOKEN_SECRET}}
+          REDIS_API_ENDPOINT: ${{secrets.REDIS_API_ENDPOINT}}
+          STREAM_ACCESS_KEY: ${{secrets.STREAM_ACCESS_KEY}}
+          STREAM_SECRET_KEY: ${{secrets.STREAM_SECRET_KEY}}
+
+        run: |
+          echo "Environment Loaded"
