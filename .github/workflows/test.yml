@@ -12,6 +12,20 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    env: # <-- GLOBAL ENV AVAILABLE FOR ALL STEPS
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      PORT: ${{ secrets.PORT }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_KEY_ID: ${{ secrets.CLOUDFLARE_KEY_ID }}
+      CLOUDFLARE_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_SECRET_ACCESS_KEY }}
+      CLOUDFLARE_DEFAULT_ENDPOINT: ${{ secrets.CLOUDFLARE_DEFAULT_ENDPOINT }}
+      CLOUDFLARE_EU_ENDPOINT: ${{ secrets.CLOUDFLARE_EU_ENDPOINT }}
+      CLOUDFLARE_BUCKET_NAME: ${{ secrets.CLOUDFLARE_BUCKET_NAME }}
+      JWT_TOKEN_SECRET: ${{ secrets.JWT_TOKEN_SECRET }}
+      REDIS_API_ENDPOINT: ${{ secrets.REDIS_API_ENDPOINT }}
+      STREAM_ACCESS_KEY: ${{ secrets.STREAM_ACCESS_KEY }}
+      STREAM_SECRET_KEY: ${{ secrets.STREAM_SECRET_KEY }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -27,20 +41,3 @@ jobs:
 
       - name: Run Tests
         run: npm test
-      - name: Load env
-        env:
-          DATABASE_URL: ${{secrets.DATABASE_URL}}
-          PORT: ${{secrets.PORT}}
-          CLOUDFLARE_API_TOKEN: ${{secrets.CLOUDFLARE_API_TOKEN}}
-          CLOUDFLARE_KEY_ID: ${{secrets.CLOUDFLARE_KEY_ID}}
-          CLOUDFLARE_SECRET_ACCESS_KEY: ${{secrets.CLOUDFLARE_SECRET_ACCESS_KEY}}
-          CLOUDFLARE_DEFAULT_ENDPOINT: ${{secrets.CLOUDFLARE_DEFAULT_ENDPOINT}}
-          CLOUDFLARE_EU_ENDPOINT: ${{secrets.CLOUDFLARE_EU_ENDPOINT}}
-          CLOUDFLARE_BUCKET_NAME: ${{secrets.CLOUDFLARE_BUCKET_NAME}}
-          JWT_TOKEN_SECRET: ${{secrets.JWT_TOKEN_SECRET}}
-          REDIS_API_ENDPOINT: ${{secrets.REDIS_API_ENDPOINT}}
-          STREAM_ACCESS_KEY: ${{secrets.STREAM_ACCESS_KEY}}
-          STREAM_SECRET_KEY: ${{secrets.STREAM_SECRET_KEY}}
-
-        run: |
-          echo "Environment Loaded"
