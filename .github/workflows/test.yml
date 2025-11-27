@@ -12,7 +12,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    env: # <-- GLOBAL ENV AVAILABLE FOR ALL STEPS
+    env: # GLOBAL ENV AVAILABLE FOR ALL STEPS
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
       PORT: ${{ secrets.PORT }}
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -38,6 +38,22 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      # ✅ Add this step to confirm env variables are loading
+      - name: Confirm environment variables
+        run: |
+          echo "DATABASE_URL: ${DATABASE_URL:+SET}"
+          echo "PORT: ${PORT:+SET}"
+          echo "CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN:+SET}"
+          echo "CLOUDFLARE_KEY_ID: ${CLOUDFLARE_KEY_ID:+SET}"
+          echo "CLOUDFLARE_SECRET_ACCESS_KEY: ${CLOUDFLARE_SECRET_ACCESS_KEY:+SET}"
+          echo "CLOUDFLARE_DEFAULT_ENDPOINT: ${CLOUDFLARE_DEFAULT_ENDPOINT:+SET}"
+          echo "CLOUDFLARE_EU_ENDPOINT: ${CLOUDFLARE_EU_ENDPOINT:+SET}"
+          echo "CLOUDFLARE_BUCKET_NAME: ${CLOUDFLARE_BUCKET_NAME:+SET}"
+          echo "JWT_TOKEN_SECRET: ${JWT_TOKEN_SECRET:+SET}"
+          echo "REDIS_API_ENDPOINT: ${REDIS_API_ENDPOINT:+SET}"
+          echo "STREAM_ACCESS_KEY: ${STREAM_ACCESS_KEY:+SET}"
+          echo "STREAM_SECRET_KEY: ${STREAM_SECRET_KEY:+SET}"
 
       - name: Run Tests
         run: npm test
