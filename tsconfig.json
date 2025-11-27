@@ -15,7 +15,9 @@
     // }
   },
   "include": [
-    "src/**/*" // This includes all files and subdirectories in the 'src' folder
+    "src/**/*", // This includes all files and subdirectories in the 'src' folder
+    "jest.teardown.js",
+    "__mocks__"
   ],
   "files": [
     "src/index.ts",

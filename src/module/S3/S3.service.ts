@@ -3,12 +3,12 @@ import {
   GetObjectCommand,
   PutObjectCommand,
 } from "@aws-sdk/client-s3";
-import { fileTypeFromBuffer } from "file-type";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { BUCKET_NAME } from "../../Config/defaults";
 import { putObjectParams, getObjectParams } from "../../types/S3";
 import { s3 } from "../../lib/s3Client";
 import { normalizeBody } from "../../Utils/normalizeBody";
+import { detectFile } from "../../Utils/bufferToBlob";
 
 const bucket = BUCKET_NAME;
 
@@ -20,7 +20,7 @@ export async function putObjectInR2Bucket(payload: putObjectParams) {
 
   const buffer = await normalizeBody(payload.Body);
 
-  const fileType = await fileTypeFromBuffer(buffer);
+  const fileType = await detectFile(buffer);
   const contentType =
     payload.ContentType || fileType?.mime || "application/octet-stream";
 
@@ -30,7 +30,6 @@ export async function putObjectInR2Bucket(payload: putObjectParams) {
     Body: buffer,
     ContentType: contentType,
   };
-
   try {
     return await s3.send(new PutObjectCommand(params));
   } catch (err) {

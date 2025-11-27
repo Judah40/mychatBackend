@@ -17,7 +17,7 @@ export const updateProfileDetailsController = async (
       middleName,
       userId,
     });
-    return success(res, null, "SUCCESSFULLY UPLOADED PROFILE PICTURE");
+    return success(res, null, "SUCCESSFULLY UPDATED PROFILE PICTURE", 200);
   } catch (error) {
     return errorResponse(res, error);
   }
@@ -30,10 +30,11 @@ export const profilePictureController = async (
 ): Promise<Response> => {
   const profilePicture = req.file;
   const { id: userId } = req.user!;
+  console.log("profilePicture");
   const Body = bufferToBlob(profilePicture!);
   try {
     await uploadProfilePicture({ Body, userId });
-    return success(res, null, "SUCCESSFULLY UPLOADED PROFILE PICTURE");
+    return success(res, null, "SUCCESSFULLY UPLOADED PROFILE PICTURE", 200);
   } catch (error) {
     return errorResponse(res, error);
   }

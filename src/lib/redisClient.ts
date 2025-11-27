@@ -1,14 +1,14 @@
 import { REDISENDPOINTURL } from "../Config/defaults";
-import redis from "redis";
+import { createClient } from "redis";
 import { RateLimiterRedis } from "rate-limiter-flexible";
 
 //REDIS CLIENT
-export const redisClient = redis.createClient({
+export const redisClient = createClient({
   url: REDISENDPOINTURL,
 });
 
 redisClient.on("error", (error) => {
-  console.log("REDIS CLIENT ERROR", error);
+  console.error("REDIS CLIENT ERROR", error);
 });
 
 //REDIS RATE LIMITER CLIENT

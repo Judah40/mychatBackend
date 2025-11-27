@@ -3,9 +3,7 @@ import jwt from "jsonwebtoken";
 // Function to generate a JWT token for user authentication
 
 interface dataTypes {
-  email: string;
   id: string;
-  role: "WORKER" | "EMPLOYER";
 }
 export const UserTokenGenerator = (data: dataTypes) => {
   const Jwt = jwt.sign({ data }, JWTTOKENSECRET || "default", {

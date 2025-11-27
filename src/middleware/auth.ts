@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-import { JWTTOKENSECRET } from "Config/defaults";
+import { JWTTOKENSECRET } from "../Config/defaults";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
@@ -22,7 +22,6 @@ export const requireAuthenticatedUser = (
 ): void => {
   try {
     const token = getAuthToken(req);
-
     if (!token) {
       res
         .status(401)
@@ -34,7 +33,7 @@ export const requireAuthenticatedUser = (
       token,
       JWTTOKENSECRET || "default"
     ) as jwt.JwtPayload;
-    if (!decoded?.data) {
+    if (!decoded?.id) {
       res
         .status(401)
         .json({ message: "Invalid Authentication Token. Please Try Again" });
@@ -43,7 +42,7 @@ export const requireAuthenticatedUser = (
 
     // ✅ TypeScript now knows req.user exists
     req.user = {
-      id: decoded?.data.id,
+      id: decoded?.id,
     };
 
     next();
