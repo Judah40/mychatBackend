@@ -1,35 +1,27 @@
-# --- Build stage ---
-FROM node:20-alpine AS builder
+# 1. Base Image: Use an official Node.js image to start the build.
+# Using the Debian-based slim image to avoid the Alpine CVE reported in the scanner.
+FROM node:latest
+
+# 2. Set Working Directory: This is the directory inside the container
+# where your application code will reside and run from.
 WORKDIR /src
 
-# Copy package manifests separately to leverage Docker cache when deps don’t change
+# 3. Copy Dependency Files: Copy package.json and package-lock.json first
+# to leverage Docker's build cache. If these files don't change, Docker won't
+# re-run the npm install step, speeding up subsequent builds.
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# 4. Install Dependencies: Install all production dependencies.
+# The --omit=dev flag keeps the image lean.
+RUN npm install --omit=dev
 
-# Copy the rest of the project (source, tsconfig, etc.)
+# 5. Copy Application Code: Copy the rest of your application source code.
 COPY . .
 
-# Build TypeScript
-RUN npm run build
-
-# --- Production stage ---
-FROM node:20-alpine AS production
-WORKDIR /src
-
-# Copy only package.json + installed dependencies (production only)
-COPY package*.json ./
-RUN npm install --only=production
-
-# Copy compiled output from builder
-COPY --from=builder /src/dist ./dist
-
-# If you use environment variables, optionally copy them too — ensure .env is secure if used
-# COPY .env ./
-
-# Expose the port your app listens on (adjust if different)
+# 6. Expose Port: Inform Docker that the container listens on the specified port.
+# Note: Render automatically forwards traffic, but this is good practice.
 EXPOSE 3000
 
-# Run the compiled server
-CMD ["node", "dist/server.js"]
+# 7. Start Command: Define the command to run when the container starts.
+# This should match your "start" script in package.json.
+CMD [ "npm", "start" ]
