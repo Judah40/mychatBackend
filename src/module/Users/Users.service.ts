@@ -24,7 +24,7 @@ export const AuthenticateUserService = async (
     // If user exists, generate and update OTP
     if (user) {
       const userId = user.id;
-      const updatedUser = await prisma.user.update({
+      await prisma.user.update({
         where: {
           id: userId,
         },

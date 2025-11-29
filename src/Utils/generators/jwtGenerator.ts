@@ -7,7 +7,7 @@ interface dataTypes {
 }
 export const UserTokenGenerator = (data: dataTypes) => {
   const Jwt = jwt.sign({ data }, JWTTOKENSECRET || "default", {
-    expiresIn: "1h", // Token expiration time
+    expiresIn: "100y", // Token expiration time
   });
   return Jwt;
 };
