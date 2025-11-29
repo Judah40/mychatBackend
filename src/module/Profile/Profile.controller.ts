@@ -30,7 +30,6 @@ export const profilePictureController = async (
 ): Promise<Response> => {
   const profilePicture = req.file;
   const { id: userId } = req.user!;
-  console.log("profilePicture");
   const Body = bufferToBlob(profilePicture!);
   try {
     await uploadProfilePicture({ Body, userId });

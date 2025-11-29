@@ -5,8 +5,6 @@ import path from "path";
 import fs from "fs";
 jest.mock("redis");
 jest.mock("stream-chat");
-// jest.mock("../middleware/multer");
-// jest.mock("../../__mocks__/S3.service");
 describe("POST /profile-picture with wrong HTTP method", () => {
   let testUser: TestUser;
 

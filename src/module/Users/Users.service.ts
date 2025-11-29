@@ -24,57 +24,56 @@ export const AuthenticateUserService = async (
     // If user exists, generate and update OTP
     if (user) {
       const userId = user.id;
-      await prisma.user.update({
+      const updatedUser = await prisma.user.update({
         where: {
           id: userId,
         },
         data: {
-          otp: otp,
+          token: otp,
         },
       });
       return Promise.resolve({ otp });
     }
-
     // If user does not exist, register new user
     const registerUser = await prisma.user.create({
       data: {
         phoneNumber,
-        otp,
+        token: otp,
       },
     });
 
     return Promise.resolve({ otp: registerUser.otp });
   } catch (error) {
-    return Promise.reject("ERROR AUTHENTICATING USER");
+    throw new Error("ERROR AUTHENTICATING USER");
   }
 };
 
 //Function to generate token for authenticated user after otp verification
-export const GenerateAuthTokenService = (
+export const GenerateAuthTokenService = async (
   payload: tokenPayload
 ): Promise<tokenPromise> => {
   if (!payload.otp || payload.otp.length != 6) {
-    return Promise.reject("INVALID OTP PROVIDED");
+    throw new Error("INVALID OTP PROVIDED");
   }
   try {
-    const user = prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
-        otp: payload.otp,
+        token: payload.otp,
       },
     });
 
     if (!user) {
-      return Promise.reject("INVALID OTP PROVIDED");
+      throw new Error("INVALID OTP PROVIDED");
     }
 
     const userToken = UserTokenGenerator(user.id);
-    const streamToken = streamClient.createToken(user.id);
+    const streamToken = streamClient.createToken(String(user.id));
     const tokens: tokenPromise = {
       streamToken,
       userToken,
     };
     return Promise.resolve(tokens);
   } catch (error) {
-    return Promise.reject("ERROR GENERATING AUTH TOKEN");
+    throw new Error("ERROR GENERATING AUTH TOKEN");
   }
 };

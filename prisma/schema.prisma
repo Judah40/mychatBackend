@@ -21,7 +21,7 @@ model User {
   lastName       String?
   middleName     String?
   profilePicture String?
-  token          String?
+  token          String? @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
