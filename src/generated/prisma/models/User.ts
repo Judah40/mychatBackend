@@ -275,6 +275,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: number
   email?: string
   phoneNumber?: string
+  token?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -282,10 +283,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   lastName?: Prisma.StringNullableFilter<"User"> | string | null
   middleName?: Prisma.StringNullableFilter<"User"> | string | null
   profilePicture?: Prisma.StringNullableFilter<"User"> | string | null
-  token?: Prisma.StringNullableFilter<"User"> | string | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-}, "id" | "email" | "phoneNumber">
+}, "id" | "email" | "phoneNumber" | "token">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

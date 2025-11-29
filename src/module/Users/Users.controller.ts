@@ -27,7 +27,7 @@ export const GenerateAuthTokenController = async (
 ): Promise<Response> => {
   const { otp } = req.body;
   try {
-    const token = await GenerateAuthTokenService(otp);
+    const token = await GenerateAuthTokenService({ otp });
     return success(res, { token }, "TOKEN GENERATED SUCCESSFULLY", 200);
   } catch (error) {
     return errorResponse(res, error);

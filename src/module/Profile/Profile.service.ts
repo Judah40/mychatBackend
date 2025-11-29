@@ -28,6 +28,7 @@ export const updateProfileDetails = async (
     if (!user) {
       return Promise.reject("USER DOESN'T EXIST");
     }
+
     await prisma.user.update({
       where: {
         id: payload.userId,
