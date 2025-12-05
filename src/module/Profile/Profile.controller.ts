@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { updateProfileDetails, uploadProfilePicture } from "./Profile.service";
+import {
+  getUserProfile,
+  updateProfileDetails,
+  uploadProfilePicture,
+} from "./Profile.service";
 import { errorResponse, success } from "../../Utils/response";
 import { bufferToBlob } from "../../Utils/bufferToBlob";
 
@@ -34,6 +38,20 @@ export const profilePictureController = async (
   try {
     await uploadProfilePicture({ Body, userId });
     return success(res, null, "SUCCESSFULLY UPLOADED PROFILE PICTURE", 200);
+  } catch (error) {
+    return errorResponse(res, error);
+  }
+};
+
+//Controller to handle getting user profile
+export const getUserProfileController = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const { id: userId } = req.user!;
+  try {
+    const profileDetails = await getUserProfile(userId);
+    return success(res, profileDetails, "SUCCESSFULLY GOTTEN PROFILE DETAILS");
   } catch (error) {
     return errorResponse(res, error);
   }

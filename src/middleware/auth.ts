@@ -33,7 +33,7 @@ export const requireAuthenticatedUser = (
       token,
       JWTTOKENSECRET || "default"
     ) as jwt.JwtPayload;
-    if (!decoded?.id) {
+    if (!decoded?.data) {
       res
         .status(401)
         .json({ message: "Invalid Authentication Token. Please Try Again" });
@@ -42,7 +42,7 @@ export const requireAuthenticatedUser = (
 
     // ✅ TypeScript now knows req.user exists
     req.user = {
-      id: decoded?.id,
+      id: decoded?.data,
     };
 
     next();
