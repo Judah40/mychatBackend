@@ -15,7 +15,6 @@ describe("PATCH /upload-profile", () => {
 
   beforeAll(async () => {
     testUser = await createTestUser();
-    console.log(testUser);
   });
 
   afterAll(async () => {

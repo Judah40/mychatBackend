@@ -1,4 +1,7 @@
-import { putObjectInR2Bucket } from "../../module/S3/S3.service";
+import {
+  getObjectFromR2Bucket,
+  putObjectInR2Bucket,
+} from "../../module/S3/S3.service";
 import { generateSecureRandomString } from "../../Utils/generators/randomStringGenerator";
 import { prisma } from "../../lib/prismaClient";
 import {
@@ -13,6 +16,10 @@ export const checkIfUserExist = async (id: string) => {
   return await prisma.user.findUnique({
     where: {
       id,
+    },
+    omit: {
+      createdAt: true,
+      updatedAt: true,
     },
   });
 };
@@ -85,5 +92,27 @@ export const uploadProfilePicture = async (
     });
   } catch (error) {
     return Promise.reject(error);
+  }
+};
+
+export const getUserProfile = async (id: string) => {
+  if (!id) throw new Error("ID IS REQUIRED");
+  let profileUrl;
+  try {
+    const user = await checkIfUserExist(id);
+    if (!user) throw new Error("USER DOES NOT EXIST");
+    const { profilePicture, ...restOfData } = user;
+    if (profilePicture) {
+      profileUrl = await getObjectFromR2Bucket({ Key: profilePicture });
+    }
+    return Promise.resolve({
+      success: true,
+      User: {
+        profilePicture: profileUrl,
+        ...restOfData,
+      },
+    });
+  } catch (error) {
+    throw error instanceof Error ? error : new Error(String(error));
   }
 };

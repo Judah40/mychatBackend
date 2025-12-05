@@ -1,6 +1,7 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 import { validateMethod } from "../../middleware/validateMethod";
 import {
+  getUserProfileController,
   profilePictureController,
   updateProfileDetailsController,
 } from "./Profile.controller";
@@ -19,4 +20,8 @@ route
   .all(validateMethod(["PATCH"]))
   .patch(multerMiddleware, profilePictureController);
 
+route
+  .route("/")
+  .all(validateMethod(["GET"]))
+  .get(getUserProfileController);
 export const profileRoute = route;
