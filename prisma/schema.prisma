@@ -25,4 +25,15 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Status    Status[]
+}
+
+model Status {
+  id      String  @id @default(cuid())
+  image   String
+  caption String?
+  userId  Int?
+  user    User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
 }
