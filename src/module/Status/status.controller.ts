@@ -47,8 +47,9 @@ export const getAllStatusController = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
+  const { id } = req.user!;
   try {
-    const statuses = await getAllStatusService();
+    const statuses = await getAllStatusService(id);
     return success(res, statuses, "SUCCESSFULLY GOTTEN ALL STATUS", 200);
   } catch (error) {
     return errorResponse(res, error);
