@@ -38,10 +38,11 @@ export const saveStatusService = async (payload: statusServicePropsType) => {
     // await scheduleDeletion(status.id);
     //FETCH DATA AND SEND TO USERS
     const statusFile = await getObjectFromR2Bucket({ Key });
-    const { image: UserImage, ...restOfData } = status;
+    const { image: UserImage, userId: id, ...restOfData } = status;
 
     return {
       file: statusFile,
+      user: user.firstName,
       ...restOfData,
     };
   } catch (error) {
@@ -72,12 +73,16 @@ export const getSingleStatusService = async (id: string) => {
 
 //GET ALL STATUS
 
-export const getAllStatusService = async () => {
+export const getAllStatusService = async (userId: string) => {
   try {
-    const allStatusFromDb = await prisma.status.findMany();
+    const allStatusFromDb: Awaited<ReturnType<typeof prisma.status.findMany>> =
+      await prisma.status.findMany();
+
+    const filtered = allStatusFromDb.filter((s: any) => s.userId !== userId);
 
     const statuses = await Promise.all(
-      allStatusFromDb.map(async (data: any) => {
+      filtered.map(async (data: any) => {
+        if (data.userId == userId) return;
         const { image, ...restOfData } = data;
         const file = await getObjectFromR2Bucket({ Key: data.image });
 
@@ -88,6 +93,7 @@ export const getAllStatusService = async () => {
       })
     );
 
+    console.log(statuses);
     return statuses;
   } catch (error) {
     throw new Error("COULDN'T GET ALL STATUS");
