@@ -77,9 +77,7 @@ export const getAllStatusService = async (userId: string) => {
   try {
     const allStatusFromDb: Awaited<ReturnType<typeof prisma.status.findMany>> =
       await prisma.status.findMany();
-
     const filtered = allStatusFromDb.filter((s: any) => s.userId !== userId);
-
     const statuses = await Promise.all(
       filtered.map(async (data: any) => {
         if (data.userId == userId) return;

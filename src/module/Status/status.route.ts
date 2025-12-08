@@ -6,6 +6,7 @@ import { validateRequest } from "../../middleware/validator.middleware";
 import {
   deleteStatusController,
   getAllStatusController,
+  getMyStatusController,
   getSingleStatusController,
   saveStatusController,
 } from "./status.controller";
@@ -22,7 +23,7 @@ route
   );
 
 route.route("/").get(getAllStatusController);
-route.route("/me").get(getAllStatusController);
+route.route("/me").get(getMyStatusController);
 
 route.route("/:id").get(getSingleStatusController);
 
