@@ -3,10 +3,10 @@ name: Run Tests on Test Branch
 on:
   push:
     branches:
-      - test
+      - Test
   pull_request:
     branches:
-      - test
+      - Test
 
 jobs:
   test:
