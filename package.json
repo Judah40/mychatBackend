@@ -7,8 +7,7 @@
     "test": "jest --runInBand",
     "dev": "nodemon --watch src --ext ts --exec ts-node src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
-    "start:worker": "ts-node -r ./env-loader.ts src/worker.ts"
+    "start": "node dist/server.js"
   },
   "keywords": [],
   "author": "",

@@ -7,7 +7,7 @@ import {
 } from "../../module/S3/S3.service";
 import { checkIfUserExist } from "../../module/Profile/Profile.service";
 import { prisma } from "../../lib/prismaClient";
-import { scheduleDeletion } from "../../lib/redisClient";
+// import { scheduleDeletion } from "../../lib/redisClient";
 
 export const saveStatusService = async (payload: statusServicePropsType) => {
   const { caption, image, userId } = payload;
@@ -35,7 +35,7 @@ export const saveStatusService = async (payload: statusServicePropsType) => {
       },
     });
     //DELETE AFTER 24 HOURS
-    await scheduleDeletion(status.id);
+    // await scheduleDeletion(status.id);
     //FETCH DATA AND SEND TO USERS
     const statusFile = await getObjectFromR2Bucket({ Key });
     const { image: UserImage, ...restOfData } = status;
