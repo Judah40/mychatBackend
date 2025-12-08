@@ -1,5 +1,5 @@
 import { profileRoute } from "./module/Profile/Profile.route";
-import { rateLimiterMiddlware } from "./middleware/redisRateLimit.middleware";
+// import { rateLimiterMiddlware } from "./middleware/redisRateLimit.middleware";
 import { UserRoute } from "./module/Users/Users.route";
 import express, { NextFunction, Request, Response } from "express";
 import { requireAuthenticatedUser } from "./middleware/auth";
