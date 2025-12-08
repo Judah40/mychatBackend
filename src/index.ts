@@ -3,6 +3,7 @@ import { rateLimiterMiddlware } from "./middleware/redisRateLimit.middleware";
 import { UserRoute } from "./module/Users/Users.route";
 import express, { NextFunction, Request, Response } from "express";
 import { requireAuthenticatedUser } from "./middleware/auth";
+import { statusRoute } from "./module/Status/status.route";
 
 export const app = express();
 
@@ -15,6 +16,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/User", UserRoute);
 app.use("/api/v1/profile", requireAuthenticatedUser, profileRoute);
+app.use("/api/v1/status", requireAuthenticatedUser, statusRoute);
 // Global error handler
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(500).send("Something broke!");

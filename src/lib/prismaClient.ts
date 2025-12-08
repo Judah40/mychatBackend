@@ -1,6 +1,10 @@
 import { DATABASE_URL } from "../Config/defaults";
 import { PrismaClient } from "../generated/prisma/client";
 import { withAccelerate } from "@prisma/extension-accelerate";
+import dotenv from "dotenv";
+
+dotenv.config();
+
 export const prisma = new PrismaClient({
   accelerateUrl: DATABASE_URL,
 }).$extends(withAccelerate());
