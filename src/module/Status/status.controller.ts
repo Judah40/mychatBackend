@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import {
   deleteStatusService,
   getAllStatusService,
+  getMyStatusService,
   getSingleStatusService,
   saveStatusService,
 } from "./status.service";
@@ -63,6 +64,19 @@ export const deleteStatusController = async (
   try {
     const deleteStatus = await deleteStatusService({ id, userId });
     return success(res, deleteStatus, "SUCCESSFULLY DELETED STATUS", 200);
+  } catch (error) {
+    return errorResponse(res, error);
+  }
+};
+
+export const getMyStatusController = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const { id } = req.user!;
+  try {
+    const statuses = await getMyStatusService(id);
+    return success(res, statuses, "SUCCESSFULLY GOTTEN MY STATUSES", 200);
   } catch (error) {
     return errorResponse(res, error);
   }

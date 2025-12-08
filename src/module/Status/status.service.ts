@@ -129,3 +129,28 @@ export const deleteStatusService = async (payload: deleteStatusPropType) => {
     throw new Error("COULDN'T DELETE STATUS");
   }
 };
+
+export const getMyStatusService = async (userId: string) => {
+  try {
+    const myStatus = await prisma.status.findMany({
+      where: { userId },
+    });
+
+    const statuses = await Promise.all(
+      myStatus.map(async (data: any) => {
+        const { image, ...restData } = data;
+
+        const file = await getObjectFromR2Bucket({ Key: image });
+
+        return {
+          file,
+          ...restData,
+        };
+      })
+    );
+
+    return statuses;
+  } catch (error) {
+    throw new Error("COULD NOT GET MY STATUSES");
+  }
+};

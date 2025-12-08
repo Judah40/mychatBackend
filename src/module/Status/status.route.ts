@@ -22,6 +22,7 @@ route
   );
 
 route.route("/").get(getAllStatusController);
+route.route("/me").get(getAllStatusController);
 
 route.route("/:id").get(getSingleStatusController);
 
